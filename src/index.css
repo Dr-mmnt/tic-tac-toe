@@ -8,7 +8,12 @@ ol, ul {
 }
 
 li button{
-  background-color: aqua;
+text-align: center;
+border-radius: 5px;
+}
+
+.selected{
+ background-color: darkgrey;
 }
 
 .board-row:after {
