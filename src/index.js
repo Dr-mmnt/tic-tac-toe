@@ -48,10 +48,10 @@ class Game extends React.Component{
       }],
       stepDisplay: Array(9).fill(null),
       xIsNext: true,
+      isAscending: true,
       stepNumber: 0,
       row: 0,
       column: 0,
-      bgColour: 'red'
     }};
 
    stepIndex(i){
@@ -105,16 +105,20 @@ class Game extends React.Component{
     const history = this.state.history.slice(0,this.state.stepNumber+1);
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
-    const moves = history.map((step,move) => {
+    const isAscending = this.state.isAscending;
+    
+    const moves = history.map((_,move1) => {
+      const move = isAscending ? move1 : history.length-move1-1;
       const desc = move ? 
         'Перейти к ходу №' + move:
         'К началу игры';
-        return(
-          <li key={move}>
-            <button
-            className={move===this.state.selectedButton?'selected':' '} 
-            onClick={() => {this.jumpTo(move)}}>{desc}</button>
-          </li>
+        return(       
+            
+            <li key = {move}>
+              <button
+              className={move===this.state.selectedButton?'selected':' '} 
+              onClick={() => {this.jumpTo(move)}}>{desc}</button>
+            </li>
         );
     });
 
@@ -124,8 +128,10 @@ class Game extends React.Component{
     } else {
       status = 'Следуюший ход ' + (this.state.xIsNext?'X':'O');
     }
-
+    
+    
     return(
+      
       <div className='game'>
         <div className='game-board'>
           <Board
@@ -139,6 +145,7 @@ class Game extends React.Component{
           
           {<p>Строка: {this.state.row} <br/>
             Столбец: {this.state.column}</p> }
+            <button onClick={()=> this.setState({isAscending: isAscending? false:true}) }>Перевернуть</button>
           <ol>{moves}</ol>
         </div>
       </div>
